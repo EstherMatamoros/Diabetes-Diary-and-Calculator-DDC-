@@ -1,0 +1,47 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link href="{% static 'js/jquery-ui-1.12.1/jquery-ui.min.css' %}" rel="stylesheet">
+	<link href="{% static 'js/jquery-ui-1.12.1/jquery-ui.structure.min.css' %}" rel="stylesheet">
+	<link href="{% static 'js/jquery-ui-1.12.1/jquery-ui.theme.min.css' %}" rel="stylesheet">
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
+
+    <title>DDC web application</title>
+    </head>
+    <body style="background:skyblue">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:skyblue">
+        <button class="navbar-toggler" style="background:skyblue" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" style="background:skyblue"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="background:skyblue">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Prediction <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/results">DB</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {% block main %}
+    {% endblock %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+	<script src="{% static 'js/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+
+	</body>

@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prediction Results</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Prediction Input:</h5>
+				<div>Date [YYYY/MM/DD]: <span id="dte"></span></div>
+                <div>Glucose SP / Target: <span id="gsp"></span></div>
+                <div>Blood Glucose measured: <span id="bgm"></span></div>
+				<div>Meal Name: <span id="nmmls"></span></div>
+                <div>Grams of Carbohydrates: <span id="mls"></span></div>
+                <div>Exercise Intensity: <span id="exi"></span></div>
+                <h5 class="pt-3">Prediction of Insulin Bolus (mU/L):</h5>
+                <div id="prediction"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="/results" role="button">View DB</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <ol class="carousel-indicators">
+          <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+          <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+		  <li data-target="#carouselExampleControls" data-slide-to="3"></li>
+   </ol>
+
+  <div class="carousel-inner" align="center">
+
+    <div class="carousel-item active">
+      {% load static %} <img src="{% static "predict/media/1.png" %}" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+     {% load static %} <img src="{% static "predict/media/2.png" %}" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      {% load static %} <img src="{% static "predict/media/3.png" %}" class="d-block w-100" alt="...">
+    </div>
+	<div class="carousel-item">
+      {% load static %} <img src="{% static "predict/media/4.png" %}" class="d-block w-100" alt="...">
+    </div>
+  </div>
+     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+</div>
+<div class="container w-100" style="background:skyblue">
+	<div class="row justify-content-center">
+		<div class="col-md-4"><br>
+			<p>
+			Teenagers should have average blood sugar levels that range between 70 to 150 mg/dL over the course of their day.
+			</p>
+
+			<p>
+			Teenage years can often be the most difficult for adolescents with diabetes to manage because managing diabetes requires responsibility and behavior control that’s not typical for most teenagers.
+			</p>
+
+			<p>
+			 Teenagers should aim to keep their blood sugar levels between 70 to 150 mg/dL throughout the day by watching what they eat, exercising, and taking their diabetes medications if they have any.
+			</p>
+
+		</div>
+		<div class="col-md-4"><br>
+			<p>
+			Adults who are 20 years or older will have blood sugar levels that range between less than 100-180 mg/dL over the course of a day.
+			</p>
+
+			<p>
+			When you wake up in the morning, your fasting blood sugar should be at its lowest because you haven’t consumed food for about eight hours.
+			</p>
+
+			<p>
+			If you’re an adult and struggling with glucose control, your healthcare provider can help you develop a treatment plan to manage your blood sugar better.
+			</p>
+		</div>
+	</div>
+</div>
+<div class="container w-100" style="background:skyblue">
+    <div class="row justify-content-center">
+        <div class="col-4"><br>
+            <h1>Insulin dose Prediction</h1>
+            <form action="" id="post-form">
+                {% csrf_token %}
+
+				<div class="form-group">
+  					<label for="datetimepicker1">Date:</label>
+  					<input type="date" step="0.1" class="form-control" id="datetimepicker1" name="datetimepicker1" placeholder="" required>
+				</div>
+				<div class="form-group">
+                    <label for="glucose_sp">Glucose SetPoint / Target</label>
+                    <input type="number" step="0.1" class="form-control" id="glucose_sp" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="glucose">Blood Glucose measured</label>
+                    <input type="number" step="0.1" class="form-control" id="glucose" placeholder="" required>
+                </div>
+				<div class="form-group">
+					<label for="namemeals">Choose Meal</label>
+					<select class="form-select form-select-sm" aria-label=".form-select-sm example" type="text" id="namemeals" required>
+						<option selected>Choose Meal</option>
+						<option value="No Meal">No Meal</option>
+						<option value="Breakfast">Breakfast</option>
+						<option value="Lunch">Lunch</option>
+						<option value="Dinner">Dinner</option>
+					</select>
+                </div>
+
+                <div class="form-group">
+                    <label for="meals">Grams of Carbohydrates</label>
+                    <input type="number" step="0.1" class="form-control" id="meals" placeholder="" required>
+                </div>
+				<div class="form-group">
+					<label for="exeint">Exercise Intensity</label>
+					<input type="number" step="0.1" class="form-control" id="exeint" placeholder="" required>
+                </div>
+                <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Submit</button>
+            </form>
+        </div>
+
+		<div class="col-md-4 align-middle" ><br>
+			<h1>Inputs definition</h1>
+			</p>
+			<p>
+			Blood Glucose Setpoint (mg/dL): the target blood sugar level at which the patients present euglycaemia. Or the Blood sugar levels during fasting.
+			</p>
+
+			<p>
+			Blood Glucose Measured (mg/dL): The lastest blood sugar level measured by the CGM sensor or other device.
+			</p>
+
+			<p>
+			Insulin Prediction (mU/L): The insulin bolus  that should be administered after the actvity (Meal or Exercise)
+			</p>
+
+			<p>
+			Meals (grams): Carbohydrates measured to eat the patient in Lunch, Breakfast or Dinner. Measured in grams of carbohydrates.
+			</p>
+
+			<p>
+			Exercise Intensity (PVO) : The Level of Intenstity of physical activity that is about to perform (see below for more info about Exercise Intensity).
+			</p>
+		</div>
+	</div>
+		<div class="card align-middle" style="background:skyblue">
+			<div class="row justify-content-center">
+			 <div class="col-8">
+			  <div class="card-body">
+				<h2 class="card-title">Exercise Intensity</h2>
+				<h3 class="card-subtitle  text-muted">Instructions to determine the exercise intensity</h3>
+				<p class="card-text">World-class athletes have been doing VO2 max testing in laboratories for years,
+										and that’s still an option—it’s also the gold standard for accuracy.
+										You can get a VO2 max test done at sports medicine facilities, or medical
+										labs that also do stress tests to evaluate heart health. You have other options:
+										With your fitness tracker: Some fitness devices provide VO2 max readings.
+										With an online calculator: Because VO2 max has been studied for years, all
+										sorts of algorithms have arisen that let you roughly calculate VO2 max based
+										on basic personal data. A quick online search will reveal dozens of VO2 max calculators. </p>
+				<a href="#" class="card-link">Go to Top</a>
+			  </div>
+			</div>
+		</div>
+</div>
+
+</div>
+
+<script>
+    $(document).on('submit', '#post-form',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "predict:submit_prediction" %}',
+            data:{
+				datetimepicker1:$('#datetimepicker1').val(),
+                glucose_sp:$('#glucose_sp').val(),
+                glucose:$('#glucose').val(),
+				namemeals:$('#namemeals').val(),
+                meals:$('#meals').val(),
+				exeint:$('#exeint').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            success:function(json) {
+                document.forms["post-form"].reset();
+                document.getElementById("prediction").innerHTML = json['result']
+                document.getElementById("gsp").innerHTML = json['glucose_sp']
+                document.getElementById("bgm").innerHTML = json['glucose']
+                document.getElementById("mls").innerHTML = json['meals']
+                document.getElementById("dte").innerHTML = json['datetimepicker1']
+				document.getElementById("nmmls").innerHTML = json['namemeals']
+				document.getElementById("exi").innerHTML = json['exeint']
+            },
+            error : function(xhr,errmsg,err) {
+
+            }
+        });
+    })
+</script>
+
+{% endblock %}

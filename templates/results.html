@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block main %}
+    <div class="container pt-5">
+        <div class="row">
+
+        <h1>Prediction Results</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                <th scope="col">#</th>
+				<th scope="col">Date</th>
+                <th scope="col">Glucose SP</th>
+                <th scope="col">Blood Glucose Measured</th>
+				<th scope="col">Meal Name</th>
+                <th scope="col">Amount of Carbs</th>
+				<th scope="col">Exercise Intensity</th>
+                <th scope="col">Insulin Bolus</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in dataset %}
+                    <tr>
+                    <th scope="row">{{ data.id }}</th>
+					<td>{{ data.datetimepicker1 }}</td>
+                    <td>{{ data.glucose_sp }}</td>
+                    <td>{{ data.glucose}}</td>
+					<td>{{ data.namemeals }}</td>
+                    <td>{{ data.meals }}</td>
+					<td>{{ data.exeint }}</td>
+                    <td>{{ data.insulin}}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
